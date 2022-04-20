@@ -10,7 +10,7 @@ export default {
     
 }
 </script>
-<style scoped>
+<style>
 
 .view__titulo{
     font-size: 2vw;

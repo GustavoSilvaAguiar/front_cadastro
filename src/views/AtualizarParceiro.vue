@@ -3,14 +3,14 @@
         
         <form class="view__form">
 
-            <h1 class="view__titulo">Consultar Parceiro</h1>
+            <h1 class="view__titulo">Atualizar Parceiro</h1>
+
             <div>
                 <label for="CNPJ">CNPJ</label>
                 <input @change="showOpcaoPesquisa" type="radio" id="CNPJ" name="opcao" checked>
                 <label for="ID">ID</label>
                 <input @change="showOpcaoPesquisa" type="radio" id="ID" name="opcao">
             </div>
-            
 
             <div class="view__formDIV" v-show="mostrar__pesquisaCNPJ">
                 <label for="razaoSocial">CNPJ para pesquisa</label>
@@ -23,26 +23,29 @@
                 <button @click="getParceiroId">Pesquisar Parceiro</button>
             </div>
 
-            <div class="view__formDIV">
-                <label for="Id">Id</label>
-                <input type="text" id="IdResultado" :value="id" name="IdResultado" readonly>
-            </div>
+            
             <div class="view__formDIV">
                 <label for="razaoSocial">Razão Social</label>
-                <input type="text" id="razaoSocial" name="cadastroRazaoSocial" :value="razaoSocial" placeholder="Digite a razão social" readonly>
+                <input type="text" id="razaoSocial" name="cadastroRazaoSocial" :value="razaoSocial" placeholder="Digite a razão social" >
             </div>
             <div class="view__formDIV">
                 <label for="nomeFantasia">Nome Fantasia</label>
-                <input type="text" id="nomeFantasia" name="cadastroNomeFantasia" :value="nomeFantasia" placeholder="Digite o nome fantasia" readonly>
+                <input type="text" id="nomeFantasia" name="cadastroNomeFantasia" :value="nomeFantasia" placeholder="Digite o nome fantasia" >
             </div>
             <div class="view__formDIV">
                 <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" name="cadastroCnpj" :value="cnpj" placeholder="Digite o CNPJ" readonly>
+                <input type="text" id="cnpj" name="cadastroCnpj" :value="cnpj" placeholder="Digite o CNPJ" >
                 
             </div>
             <div class="view__formDIV">
-                <label for="idCliente">Id Cliente</label>
-                <input type="number" id="idCliente" name="idCliente" :value="idCliente" readonly>
+                <label for="id">ID do cliente relacionado</label>
+                <input type="number"  id="id" name="cadastroID" :value="IdCliente" placeholder="Digite o ID do cliente">
+            </div>
+            <div class="view__formDIV"  v-show="mostrar__pesquisaID">
+                <button @click="putParceiroId">Atualizar Parceiro</button>
+            </div>
+            <div class="view__formDIV"  v-show="mostrar__pesquisaCNPJ">
+                <button @click="putParceiroCNPJ">Atualizar Parceiro</button>
             </div>
         </form>
     </div>
@@ -52,8 +55,10 @@
 
 const axios = require('axios').default
 
+
+
 export default {
-    name:"PesquisarParceiro",
+    name:"atualizarParceiro",
     data(){
         return{
             mostrar__pesquisaCNPJ: true,
@@ -62,8 +67,7 @@ export default {
             razaoSocial: null,
             nomeFantasia: null,
             cnpj: null,
-            idCliente: null,
-            id:null
+            IdCliente: null
         }
     },
     methods:{
@@ -71,23 +75,31 @@ export default {
             this.mostrar__pesquisaCNPJ = !this.mostrar__pesquisaCNPJ;
             this.mostrar__pesquisaID = !this.mostrar__pesquisaID
         },
+        valores(){
+            const payload = {
+                razaoSocial: document.getElementById('razaoSocial').value,
+                nomeFantasia: document.getElementById('nomeFantasia').value,
+                cnpj: document.getElementById('cnpj').value,
+                contaClienteId: +document.getElementById('id').value
+            }
+            return payload;
+        },
+        valoresGet(response){
+            this.razaoSocial = response.data.razaoSocial
+            this.nomeFantasia = response.data.nomeFantasia
+            this.cnpj = response.data.cnpj
+            this.IdCliente = response.data.contaClienteId
+        },
         async getParceiroId(e){
             var id = document.getElementById('IDpesquisa');
            try {
                e.preventDefault();
                
-               const response = await axios.get('https://localhost:5001/ContaParceiro/id/'+id.value);
-               console.log(response);
-               this.cliente = response.data
-               this.razaoSocial = response.data.razaoSocial
-               this.nomeFantasia = response.data.nomeFantasia
-               this.cnpj = response.data.cnpj
-               this.idCliente = response.data.contaClienteId
-               this.id = response.data.id
+               const response = await axios.get('https://localhost:5001/ContaParceiro/Id/'+id.value);
+               this.valoresGet(response)
                
            } catch (error) {
                console.error(error);
-               alert("ID errado ou inexistente");
            }
        },
        async getParceiroCNPJ(e){
@@ -96,18 +108,34 @@ export default {
                e.preventDefault();
                
                const response = await axios.get('https://localhost:5001/ContaParceiro/cnpj/'+id.value);
-               console.log(response);
-               console.log('dois');
-               this.cliente = response.data
-               this.razaoSocial = response.data.razaoSocial
-               this.nomeFantasia = response.data.nomeFantasia
-               this.cnpj = response.data.cnpj
-               this.idCliente = response.data.contaClienteId
-               this.id = response.data.id
+               this.valoresGet(response);
                
            } catch (error) {
                console.error(error);
-               alert("CNPJ errado ou inexistente");
+               alert("ta errado, arruma")
+           }
+       },
+       async putParceiroId(e){
+           var id = document.getElementById('IDpesquisa');
+           try{
+               e.preventDefault();
+
+               await axios.put('https://localhost:5001/ContaParceiro/id/'+id.value, this.valores());
+               alert('Cadastro de parceiro atualizado com sucesso');
+           }catch{
+               console.error(error);
+           }
+       },
+       async putParceiroCNPJ(e){
+           var id = document.getElementById('CNPJpesquisa');
+           
+           try{
+               e.preventDefault();
+
+               await axios.put('https://localhost:5001/ContaParceiro/cnpj/'+id.value, this.valores());
+               alert('Cadastro de parceiro atualizado com sucesso');
+           }catch{
+               console.error(error);
            }
        }
        
@@ -117,7 +145,6 @@ export default {
 </script>
 <style scoped>
 .view__form{
-    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     display: flex;
     flex-direction: column;
     align-content: space-between;

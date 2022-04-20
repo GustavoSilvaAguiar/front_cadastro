@@ -41,6 +41,38 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/PesquisarParceiro.vue')
+  },
+  {
+    path: '/atualizarCliente',
+    name: 'atualizarCliente',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/AtualizarCliente.vue')
+  },
+  {
+    path: '/atualizarParceiro',
+    name: 'atualizarParceiro',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/AtualizarParceiro.vue')
+  },
+  {
+    path: '/excluirCliente',
+    name: 'excluirCliente',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ExcluirCliente.vue')
+  },
+  {
+    path: '/excluirParceiro',
+    name: 'excluirParceiro',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ExcluirParceiro.vue')
   }
 
 

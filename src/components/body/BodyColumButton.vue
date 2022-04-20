@@ -9,12 +9,12 @@
         <router-link v-show="mostrar_consulta" to="/consultarParceiro" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Parceiro</div></router-link>
 
         <button @click="showTopicosAtualizar" class="corpoDoSite__botaoColuna">{{button3}}</button>
-        <router-link v-show="mostrar_atualizar" to="/consultarCliente" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Cliente</div></router-link>
-        <router-link v-show="mostrar_atualizar" to="/consultarCliente" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Parceiro</div></router-link>
+        <router-link v-show="mostrar_atualizar" to="/atualizarCliente" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Cliente</div></router-link>
+        <router-link v-show="mostrar_atualizar" to="/atualizarParceiro" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Parceiro</div></router-link>
 
         <button @click="showTopicosExcluir" class="corpoDoSite__botaoColuna">{{button4}}</button>
-        <router-link v-show="mostrar_excluir" to="/consultarCliente" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Cliente</div></router-link>
-        <router-link v-show="mostrar_excluir" to="/consultarCliente" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Parceiro</div></router-link>
+        <router-link v-show="mostrar_excluir" to="/excluirCliente" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Cliente</div></router-link>
+        <router-link v-show="mostrar_excluir" to="/excluirParceiro" class="corpoDoSite__botaoColuna"><div class="corpoDoSite__botaoColunaTexto">Parceiro</div></router-link>
 
         
     </div>
@@ -38,15 +38,27 @@ export default {
     methods:{
         showTopicos(){
             this.mostrar_cadastro=!this.mostrar_cadastro
+            this.mostrar_consulta= false;
+            this.mostrar_atualizar= false;
+            this.mostrar_excluir= false
         },
         showTopicosConsulta(){
             this.mostrar_consulta = !this.mostrar_consulta
+            this.mostrar_atualizar= false;
+            this.mostrar_excluir= false;
+            this.mostrar_cadastro=false;
         },
         showTopicosAtualizar(){
             this.mostrar_atualizar = !this.mostrar_atualizar
+            this.mostrar_excluir= false;
+            this.mostrar_cadastro= false;
+            this.mostrar_consulta= false;
         },
         showTopicosExcluir(){
             this.mostrar_excluir = !this.mostrar_excluir
+            this.mostrar_cadastro= false;
+            this.mostrar_consulta= false;
+            this.mostrar_atualizar= false;
         }
     }
 }
