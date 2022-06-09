@@ -2,7 +2,7 @@
         <form class="view__form">
             <h1 class="view__titulo">Cadastro Parceiro</h1>
             <div class="view__formDIV">
-                <label for="razaoSocial">Razão Social</label>
+                <label for="razaoSocial">Razão Social*</label>
                 <input type="text" id="razaoSocial" name="cadastroRazaoSocial" placeholder="Digite a razão social">
             </div>
             <div class="view__formDIV">
@@ -10,14 +10,14 @@
                 <input type="text" id="nomeFantasia" name="cadastroNomeFantasia" placeholder="Digite o nome fantasia">
             </div>
             <div class="view__formDIV">
-                <label for="cnpj">CNPJ</label>
+                <label for="cnpj">CNPJ*</label>
                 <input type="text" id="cnpj" name="cadastroCnpj" placeholder="Digite o CNPJ">
             </div>
             <div class="view__formDIV">
-                <label for="id">ID do cliente relacionado</label>
-                <input type="number"  id="id" name="cadastroID" placeholder="Digite o ID do cliente">
+                <label for="id">ID do cliente relacionado*</label>
+                <input type="number"  id="id" name="cadastroID" placeholder="Digite o ID do cliente" required="required">
             </div>
-            <button @click="postParceiro">Cadastrar</button>
+            <button class="btn" @click="postParceiro">Cadastrar</button>
         </form>
 </template>
 <script>
@@ -39,9 +39,15 @@ export default {
     
                 e.preventDefault();
                 //debugger
-                await axios.post('https://localhost:5001/ContaParceiro', payload)
+                if(payload.contaClienteId == ""){
+                    alert("Não foi possivel cadastrar o parceiro\nVerifique se os dados marcados com (*) estão todos preenchidos")
+                }else{
+                    await axios.post('https://localhost:5001/ContaParceiro', payload)
+                    alert("Cadastro realizaado com sucesso")
+                }
             }catch(error){
                 console.error(error);
+                alert("Não foi possivel cadastrar o parceiro\nVerifique se os dados marcados com (*) estão todos preenchidos");
             }
         }
     }
